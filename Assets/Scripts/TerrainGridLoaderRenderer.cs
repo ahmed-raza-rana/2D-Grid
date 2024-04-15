@@ -45,7 +45,7 @@ public class TerrainGrid
 [System.Serializable]
 public class GridRow
 {
-    public GridTile[] tiles;
+    public GridTile[] tileType;
 }
 
 [System.Serializable]

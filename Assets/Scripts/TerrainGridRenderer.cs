@@ -18,9 +18,9 @@ public class TerrainGridRenderer : ITerrainGridRenderer
         {
             var row = terrainGrid.rows[i];
             // Loop through the tiles in the row
-            for (var j = 0; j < row.tiles.Length; j++)
+            for (var j = 0; j < row.tileType.Length; j++)
             {
-                var tileType = row.tiles[j].tileType;
+                var tileType = row.tileType[j].tileType;
 
                 // Instantiate the corresponding tile prefab based on the tile type
                 var tilePrefab = tilePrefabs[tileType];
