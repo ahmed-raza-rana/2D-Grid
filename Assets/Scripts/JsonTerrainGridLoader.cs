@@ -23,6 +23,7 @@ public class JsonTerrainGridLoader : ITerrainGridLoader
 
         // Attempt to deserialize JSON string
         TerrainGrid terrainGrid = JsonUtility.FromJson<TerrainGrid>(json);
+        Debug.Log(terrainGrid.rows);
         if (terrainGrid == null)
         {
             Debug.LogError("Failed to deserialize JSON string");

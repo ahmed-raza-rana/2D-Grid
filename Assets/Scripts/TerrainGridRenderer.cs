@@ -14,13 +14,13 @@ public class TerrainGridRenderer : ITerrainGridRenderer
     public void RenderTerrainGrid(TerrainGrid terrainGrid, GameObject[] tilePrefabs, Transform parentTransform)
     {
         // Loop through the rows of the terrain grid
-        for (var i = 0; i < terrainGrid.grid.Length; i++)
+        for (var i = 0; i < terrainGrid.rows.Length; i++)
         {
-            var row = terrainGrid.grid[i];
+            var row = terrainGrid.rows[i];
             // Loop through the tiles in the row
-            for (var j = 0; j < row.row.Length; j++)
+            for (var j = 0; j < row.tiles.Length; j++)
             {
-                var tileType = row.row[j].tileType;
+                var tileType = row.tiles[j].tileType;
 
                 // Instantiate the corresponding tile prefab based on the tile type
                 var tilePrefab = tilePrefabs[tileType];

@@ -24,9 +24,8 @@ public class TerrainGridLoaderRenderer : MonoBehaviour
         if (jsonFile != null)
         {
             terrainGrid = _terrainGridLoader.LoadTerrainGrid(jsonFile.text);
-            Debug.Log(terrainGrid.grid);
-            Debug.Log(terrainGrid.grid.Length);
-            Debug.Log(terrainGrid.grid[0].row);
+            Debug.Log(terrainGrid.rows);
+            Debug.Log(terrainGrid.rows.Length);
             _terrainGridRenderer.RenderTerrainGrid(terrainGrid, tilePrefabs, transform);
         }
         else
@@ -40,13 +39,13 @@ public class TerrainGridLoaderRenderer : MonoBehaviour
 [System.Serializable]
 public class TerrainGrid
 {
-    public GridRow[] grid;
+    public GridRow[] rows;
 }
 
 [System.Serializable]
 public class GridRow
 {
-    public GridTile[] row;
+    public GridTile[] tiles;
 }
 
 [System.Serializable]
