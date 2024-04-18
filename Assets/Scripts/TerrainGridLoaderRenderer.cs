@@ -1,7 +1,6 @@
 using UnityEngine;
-using System.Collections;
-using System.IO;
-using UnityEngine.Serialization;
+using System.Collections.Generic;
+using UnityEngine.tvOS;
 
 // Main terrain grid loader and renderer component
 public class TerrainGridLoaderRenderer : MonoBehaviour
@@ -9,9 +8,12 @@ public class TerrainGridLoaderRenderer : MonoBehaviour
     public string jsonFileName; // Assign the path to your JSON file in the Unity Editor
     public GameObject[] tilePrefabs; // Array of prefabs representing different tile types
 
+    public float tileSize;
+    public Quaternion tileRotation;
+
     private ITerrainGridLoader _terrainGridLoader;
     private ITerrainGridRenderer _terrainGridRenderer;
-    public TerrainGrid terrainGrid;
+    public TerrainData terrainGrid;
 
     private void Start()
     {
@@ -20,13 +22,10 @@ public class TerrainGridLoaderRenderer : MonoBehaviour
 
         // Load the JSON file from the Resources folder
         var jsonFile = Resources.Load<TextAsset>(jsonFileName);
-        Debug.Log(jsonFile);
         if (jsonFile != null)
         {
             terrainGrid = _terrainGridLoader.LoadTerrainGrid(jsonFile.text);
-            Debug.Log(terrainGrid.rows);
-            Debug.Log(terrainGrid.rows.Length);
-            _terrainGridRenderer.RenderTerrainGrid(terrainGrid, tilePrefabs, transform);
+            _terrainGridRenderer.RenderTerrainGrid(terrainGrid, tilePrefabs, transform, tileSize);
         }
         else
         {
@@ -37,20 +36,14 @@ public class TerrainGridLoaderRenderer : MonoBehaviour
 
 // Data classes representing the terrain grid
 [System.Serializable]
-public class TerrainGrid
+public class TerrainData
 {
-    public GridRow[] rows;
+    public List<List<Tile>> TerrainGrid { get; set; }
 }
 
 [System.Serializable]
-public class GridRow
+public class Tile
 {
-    public GridTile[] tileType;
-}
-
-[System.Serializable]
-public class GridTile
-{
-    public int tileType;
+    public int TileType { get; set; }
 }
 
