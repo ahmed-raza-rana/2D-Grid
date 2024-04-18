@@ -18,8 +18,6 @@ public class JsonTerrainGridLoader : ITerrainGridLoader
             return null;
         }
 
-        Debug.Log("JSON string: " + json);
-
         // Attempt to deserialize JSON string
         //TerrainGrid terrainGrid = JsonUtility.FromJson<TerrainGrid>(json);
         TerrainData terrainGrid = JsonConvert.DeserializeObject<TerrainData>(json);
