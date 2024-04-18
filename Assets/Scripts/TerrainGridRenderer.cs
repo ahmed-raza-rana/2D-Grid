@@ -1,31 +1,25 @@
+using System.Linq;
 using UnityEngine;
-using System.Collections;
-using System.IO;
-
 // Interface for terrain grid renderers
 public interface ITerrainGridRenderer
 {
-    void RenderTerrainGrid(TerrainGrid terrainGrid, GameObject[] tilePrefabs, Transform parentTransform);
+    void RenderTerrainGrid(TerrainData terrainGrid, GameObject[] tilePrefabs, Transform parentTransform, float tileSize);
 }
 
 // Concrete implementation of terrain grid renderer
 public class TerrainGridRenderer : ITerrainGridRenderer
 {
-    public void RenderTerrainGrid(TerrainGrid terrainGrid, GameObject[] tilePrefabs, Transform parentTransform)
+    public void RenderTerrainGrid(TerrainData terrainGrid, GameObject[] tilePrefabs, Transform parentTransform, float tileSize)
     {
         // Loop through the rows of the terrain grid
-        for (var i = 0; i < terrainGrid.rows.Length; i++)
+        for (var i = 0; i < terrainGrid.TerrainGrid.Count; i++)
         {
-            var row = terrainGrid.rows[i];
+            var row = terrainGrid.TerrainGrid[i];
+            var j = 0;
             // Loop through the tiles in the row
-            for (var j = 0; j < row.tileType.Length; j++)
+            foreach (var tileInstance in from tile in row select tile.TileType into tileType select tilePrefabs[tileType] into tilePrefab let tilePosition = new Vector3(tileSize * j, 0, tileSize * -i) select Object.Instantiate(tilePrefab, tilePosition, Quaternion.Euler(90f, 0f, 0f), parentTransform))
             {
-                var tileType = row.tileType[j].tileType;
-
-                // Instantiate the corresponding tile prefab based on the tile type
-                var tilePrefab = tilePrefabs[tileType];
-                var tilePosition = new Vector3(j, 0, -i); // Assuming the grid is laid out on the XZ plane
-                var tileInstance = Object.Instantiate(tilePrefab, tilePosition, Quaternion.identity, parentTransform);
+                j++;
             }
         }
     }
