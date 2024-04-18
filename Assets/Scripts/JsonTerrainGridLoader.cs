@@ -1,17 +1,16 @@
 using UnityEngine;
-using System.Collections;
-using System.IO;
+using Newtonsoft.Json;
 
 // Interface for terrain grid loaders
 public interface ITerrainGridLoader
 {
-    TerrainGrid LoadTerrainGrid(string filePath);
+    TerrainData LoadTerrainGrid(string filePath);
 }
 
 // Concrete implementation of terrain grid loader using JSON
 public class JsonTerrainGridLoader : ITerrainGridLoader
 {
-    public TerrainGrid LoadTerrainGrid(string json)
+    public TerrainData LoadTerrainGrid(string json)
     {
         if (string.IsNullOrEmpty(json))
         {
@@ -22,12 +21,8 @@ public class JsonTerrainGridLoader : ITerrainGridLoader
         Debug.Log("JSON string: " + json);
 
         // Attempt to deserialize JSON string
-        TerrainGrid terrainGrid = JsonUtility.FromJson<TerrainGrid>(json);
-        Debug.Log(terrainGrid.rows);
-        if (terrainGrid == null)
-        {
-            Debug.LogError("Failed to deserialize JSON string");
-        }
+        //TerrainGrid terrainGrid = JsonUtility.FromJson<TerrainGrid>(json);
+        TerrainData terrainGrid = JsonConvert.DeserializeObject<TerrainData>(json);
 
         return terrainGrid;
     }
