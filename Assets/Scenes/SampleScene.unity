@@ -153,11 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jsonFileName: json/data
-  tilePrefabs:
-  - {fileID: 8317799290565621437, guid: d6a5295f323dfc84e91e7b549da0afb6, type: 3}
-  - {fileID: 988560416773826676, guid: 505898809b6ef0c419e5fcd782e0ad2e, type: 3}
-  - {fileID: 9139697951910644456, guid: 38284209e63f5fb40a858f633ed77d42, type: 3}
-  - {fileID: 7591705336379552659, guid: a93b227b376ca554c9961153ffa186e4, type: 3}
+  gridConfig: {fileID: 11400000, guid: 1b245d1b27fd3fb48bbc700c568c6efb, type: 2}
   tileSize: 0.15
   tileRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!4 &387660720
@@ -370,13 +366,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01ff189dd7f1e5f4ca8426d654df868b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomOutMin: 0.3
-  zoomOutMax: 0.5
+  zoomOutMin: 0.5
+  zoomOutMax: 0.8
   panSpeed: 5
   zoomSpeed: 1
   minX: -1
