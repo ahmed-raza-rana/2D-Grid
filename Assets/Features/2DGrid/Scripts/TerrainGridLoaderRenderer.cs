@@ -7,7 +7,8 @@ namespace Features._2DGrid.Scripts
     public class TerrainGridLoaderRenderer : MonoBehaviour
     {
         public string jsonFileName; // Assign the path to your JSON file in the Unity Editor
-        public GameObject[] tilePrefabs; // Array of prefabs representing different tile types
+        [SerializeField] private GridConfig gridConfig;
+        //public GameObject[] tilePrefabs; // Array of prefabs representing different tile types
 
         public float tileSize;
         public Quaternion tileRotation;
@@ -26,7 +27,7 @@ namespace Features._2DGrid.Scripts
             if (jsonFile != null)
             {
                 terrainGrid = _terrainGridLoader.LoadTerrainGrid(jsonFile.text);
-                _terrainGridRenderer.RenderTerrainGrid(terrainGrid, tilePrefabs, transform, tileSize);
+                _terrainGridRenderer.RenderTerrainGrid(terrainGrid, gridConfig, transform, tileSize);
             }
             else
             {
