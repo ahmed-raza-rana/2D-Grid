@@ -9,44 +9,55 @@ namespace Features._2DGrid.Scripts
         [SerializeField] private LayerMask floorLayerMask;
         public GameObject cellIndicator;
         [SerializeField] private Grid grid;
+        [SerializeField] private TablePlacer tablePlacer;
+        private GameObject _instantiatedObject; // Reference to the instantiated object
+
 
         private void Update()
         {
-            // Check for mouse input
+            if (_instantiatedObject != null)
+            {
+                // Move the instantiated object to follow the cell indicator
+                _instantiatedObject.transform.position = cellIndicator.transform.position;
+            }
+            
             if (Input.GetMouseButton(0))
             {
-                // Cast a ray from the mouse position
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, floorLayerMask))
                 {
-                    // Get the GridTile component of the selected object
                     GridTile gridTile = hit.collider.gameObject.GetComponent<GridTile>();
                     if (gridTile != null)
                     {
-                        // Access the canPlaceTable property
-                        bool canPlaceTable = gridTile.canPlaceTable;
+                        // Update cell indicator position and color
+                        Vector3Int gridPos = grid.WorldToCell(hit.point);
+                        cellIndicator.transform.position = grid.CellToWorld(gridPos);
+                        cellIndicator.GetComponent<Renderer>().material.color = gridTile.canPlaceTable ? Color.green : Color.red;
 
-                        // Update color of cellIndicator based on canPlaceTable
-                        cellIndicator.GetComponent<Renderer>().material.color = canPlaceTable ? Color.green : Color.red;
+                        // Draw the raycast
+                        Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.red);
+
+                        // Show the cellIndicator
+                        cellIndicator.SetActive(true);
                     }
-
-                    // Update cell indicator position
-                    Vector3Int gridPos = grid.WorldToCell(hit.point);
-                    cellIndicator.transform.position = grid.CellToWorld(gridPos);
-
-                    // Draw the raycast
-                    Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.red);
-
-                    // Show the cellIndicator
-                    cellIndicator.SetActive(true);
                 }
             }
             else if (Input.GetMouseButtonUp(0))
             {
+                // Place the table on mouse button up
+                Vector3Int gridPos = grid.WorldToCell(cellIndicator.transform.position);
+                tablePlacer.PlaceTableAt(gridPos);
+
                 // Hide the cellIndicator on mouse up click
                 cellIndicator.SetActive(false);
             }
+        }
+
+        public void InstantiateAndPlaceTable(GameObject tablePrefab)
+        {
+            Vector3Int gridPos = grid.WorldToCell(cellIndicator.transform.position);
+            _instantiatedObject = tablePlacer.InstantiateAndPlaceTable(tablePrefab, gridPos, tablePrefab.transform.rotation);
         }
     }
 }
