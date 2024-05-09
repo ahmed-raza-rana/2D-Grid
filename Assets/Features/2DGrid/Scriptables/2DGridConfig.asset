@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb8a11f54a260fd4dbe0a65f8570009e, type: 3}
+  m_Name: 2DGridConfig
+  m_EditorClassIdentifier: 
+  gridObj: {fileID: 8317799290565621437, guid: d6a5295f323dfc84e91e7b549da0afb6, type: 3}
+  dirt: {fileID: 21300000, guid: 3925ea201078a9048808e1551ad788c0, type: 3}
+  grass: {fileID: 21300000, guid: 2ea6dd56eee30c2428fdc225cfcbba4c, type: 3}
+  stone: {fileID: 21300000, guid: 1fe3d44cccf230748b4f040a42df9fc0, type: 3}
+  wood: {fileID: 21300000, guid: b917dedae56ef404d8488f326f8287aa, type: 3}
