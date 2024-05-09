@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Features._2DGrid.Scripts
 {
     [CreateAssetMenu(fileName = "2DGridConfig",menuName = "2dGrid/GridConfig")]
-    public class GridConfig:ScriptableObject
+    public class GridConfig : ScriptableObject
     {
         public GameObject gridObj;
         

@@ -7,6 +7,7 @@ namespace Features._2DGrid.Scripts
     public interface ITerrainGridRenderer
     {
         void RenderTerrainGrid(TerrainData terrainGrid, GridConfig gridConfig, Transform parentTransform, float tileSize);
+        GridTile[,] GetTilesArray();
     }
 
 // Concrete implementation of terrain grid renderer
@@ -15,6 +16,11 @@ namespace Features._2DGrid.Scripts
         private GridTile[,] _tilesArray;
         private int _row = 0;
         private int _col = 0;
+        
+        public GridTile[,] GetTilesArray()
+        {
+            return _tilesArray;
+        }
 
         public void RenderTerrainGrid(TerrainData terrainGrid, GridConfig gridConfig, Transform parentTransform,
             float tileSize)
@@ -37,6 +43,7 @@ namespace Features._2DGrid.Scripts
                     TileType(tileType, gridConfig, tilePrefab);
                     var tileInstance = Object.Instantiate(tilePrefab, tilePosition, Quaternion.Euler(90f, 0f, 0f),
                         parentTransform);
+                    tileInstance.name = (i + ":" + j).ToString();
                     var gridTileComponent = tileInstance.GetComponent<GridTile>();
                     gridTileComponent.TileUpdate(tilePosition, tileType);
 

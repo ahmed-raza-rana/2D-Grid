@@ -13,7 +13,7 @@ namespace Features._2DGrid.Scripts
         {
             Debug.Log("Herer");
             // Call the InstantiateAndPlaceTable method in the InputManager
-            inputManager.InstantiateAndPlaceTable(tablePrefab[index]);
+            inputManager.InstantiateAndPlaceTable(tablePrefab[index], index);
         }
     }
 }

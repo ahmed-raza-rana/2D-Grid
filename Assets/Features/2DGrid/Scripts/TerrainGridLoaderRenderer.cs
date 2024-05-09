@@ -6,6 +6,7 @@ namespace Features._2DGrid.Scripts
     // Main terrain grid loader and renderer component
     public class TerrainGridLoaderRenderer : MonoBehaviour
     {
+        public GridTile[,] TilesArray;
         public string jsonFileName; // Assign the path to your JSON file in the Unity Editor
         [SerializeField] private GridConfig gridConfig;
         //public GameObject[] tilePrefabs; // Array of prefabs representing different tile types
@@ -28,6 +29,7 @@ namespace Features._2DGrid.Scripts
             {
                 terrainGrid = _terrainGridLoader.LoadTerrainGrid(jsonFile.text);
                 _terrainGridRenderer.RenderTerrainGrid(terrainGrid, gridConfig, transform, tileSize);
+                TilesArray = _terrainGridRenderer.GetTilesArray();
             }
             else
             {
