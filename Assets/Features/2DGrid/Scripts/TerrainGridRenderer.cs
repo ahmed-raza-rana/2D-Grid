@@ -8,23 +8,23 @@ namespace Features._2DGrid.Scripts
     {
         void RenderTerrainGrid(TerrainData terrainGrid, GridConfig gridConfig, Transform parentTransform, float tileSize);
     }
-    public interface IAdjustTileCalculator
-    {
-        void CalculateAdjustTiles(Tile[,] gridArray, List<Tile>[,] adjustGrid);
-    }
 
 // Concrete implementation of terrain grid renderer
-    public class TerrainGridRenderer : ITerrainGridRenderer, IAdjustTileCalculator
-    { 
-        private GameObject[,] tilesArray; // Declare the 2D array to store tiles
-        private int _row;
-        private int _col;
-        
-        public void RenderTerrainGrid(TerrainData terrainGrid, GridConfig gridConfig, Transform parentTransform, float tileSize)
+    public class TerrainGridRenderer : ITerrainGridRenderer
+    {
+        private GridTile[,] _tilesArray;
+        private int _row = 0;
+        private int _col = 0;
+
+        public void RenderTerrainGrid(TerrainData terrainGrid, GridConfig gridConfig, Transform parentTransform,
+            float tileSize)
         {
-            tilesArray = new GameObject[terrainGrid.TerrainGrid.Count, terrainGrid.TerrainGrid[0].Count]; // Initialize the 2D array
+            _row = terrainGrid.TerrainGrid.Count;
+            _col = terrainGrid.TerrainGrid[0].Count;
+            _tilesArray = new GridTile[_row, _col];
+
             // Loop through the rows of the terrain grid
-            for (var i = 0; i < terrainGrid.TerrainGrid.Count; i++)
+            for (var i = 0; i < _row; i++)
             {
                 var row = terrainGrid.TerrainGrid[i];
                 var j = 0;
@@ -35,33 +35,56 @@ namespace Features._2DGrid.Scripts
                     var tilePrefab = gridConfig.gridObj;
                     var tilePosition = new Vector3(tileSize * j, 0, tileSize * -i);
                     TileType(tileType, gridConfig, tilePrefab);
-                    var tileInstance = Object.Instantiate(tilePrefab, tilePosition, Quaternion.Euler(90f, 0f, 0f), parentTransform);
-                    tileInstance.GetComponent<GridTile>().TileUpdate(tilePosition, tileType);
-                    
-                    // Save the instantiated tile in the 2D array
-                    tilesArray[i, j] = tileInstance;
+                    var tileInstance = Object.Instantiate(tilePrefab, tilePosition, Quaternion.Euler(90f, 0f, 0f),
+                        parentTransform);
+                    var gridTileComponent = tileInstance.GetComponent<GridTile>();
+                    gridTileComponent.TileUpdate(tilePosition, tileType);
+
+                    // Save the instantiated tile and its GridTile component in the 2D array
+                    _tilesArray[i, j] = gridTileComponent;
                     j++;
                 }
             }
+
+            CalculateAdjustTiles();
         }
-        
-        public void CalculateAdjustTiles(Tile[,] gridArray, List<Tile>[,] neighbourGrid)
+
+        private void CalculateAdjustTiles()
         {
             for (var row = 0; row < _row; row++)
             {
                 for (var col = 0; col < _col; col++)
                 {
-                    FindAdjustTiles();
+                    FindAdjustTiles(new Vector2Int(row, col));
                 }
             }
         }
-        
-        private void FindAdjustTiles()
+
+        private void FindAdjustTiles(Vector2Int currentTile)
         {
-            
+            var adjustTiles = new List<GridTile>();
+
+            // Define the range of valid neighbor indices
+            var minCol = Mathf.Max(0, currentTile.x - 1);
+            var maxCol = Mathf.Min(_col - 1, currentTile.x + 1);
+            var minRow = Mathf.Max(0, currentTile.y - 1);
+            var maxRow = Mathf.Min(_row - 1, currentTile.y + 1);
+
+            // Iterate over neighboring indices (up, down, left, right)
+            for (var row = minRow; row <= maxRow; row++)
+            {
+                for (var col = minCol; col <= maxCol; col++)
+                {
+                    // Exclude diagonals and the current tile itself
+                    if ((row == currentTile.y || col == currentTile.x) && (row != currentTile.y || col != currentTile.x))
+                    {
+                        adjustTiles.Add(_tilesArray[col, row]);
+                    }
+                }
+            }
+
+            _tilesArray[currentTile.x, currentTile.y].adjustObjs = adjustTiles;
         }
-        
-        
 
         private static void TileType(TileEnum tileEnum, GridConfig gridConfig, GameObject tile)
         {
