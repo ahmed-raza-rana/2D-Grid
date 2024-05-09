@@ -1442,6 +1442,8 @@ MonoBehaviour:
   grid: {fileID: 1348337455}
   tablePlacer: {fileID: 260486316}
   gridTile: {fileID: 0}
+  nextGridTile: {fileID: 0}
+  TerrainGridLoaderRenderer: {fileID: 387660719}
 --- !u!4 &5959306770951624018
 Transform:
   m_ObjectHideFlags: 0
